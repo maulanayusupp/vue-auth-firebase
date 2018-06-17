@@ -1,24 +1,46 @@
 <template>
   <header id="header">
     <div class="logo">
-      <router-link to="/">Vue - Complete Guide</router-link>
+      <router-link to="/">Vue Auth Firebase</router-link>
     </div>
     <nav>
       <ul>
-        <li>
-          <router-link to="/signup">Sign Up</router-link>
-        </li>
-        <li>
-          <router-link to="/signin">Sign In</router-link>
-        </li>
-        <li>
-          <router-link to="/dashboard">Dashboard</router-link>
-        </li>
+        <template v-if="!auth">
+          <li>
+            <router-link to="/signup">Sign Up</router-link>
+          </li>
+          <li>
+            <router-link to="/signin">Sign In</router-link>
+          </li>  
+        </template>
+        
+        <template v-else>
+          <li>
+            <router-link to="/dashboard">Dashboard</router-link>
+          </li>
+          <li>
+            <button @click="onLogout">Logout</button>
+          </li>
+        </template>
       </ul>
     </nav>
   </header>
 </template>
 
+<script>
+  export default {
+    computed: {
+      auth() {
+        return this.$store.getters.isAuthenticated
+      }
+    },
+    methods: {
+      onLogout() {
+        this.$store.dispatch('logout')
+      }
+    }
+  }
+</script>
 <style scoped>
   #header {
     height: 56px;
